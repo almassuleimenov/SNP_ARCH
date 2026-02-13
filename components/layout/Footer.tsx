@@ -51,14 +51,12 @@ export default function Footer() {
 
       {/* 2. GRID INFO */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-20 border-t border-white/10 pt-16 pb-20">
-        
-        {/* Column 1: Address */}
+       {/* Column 1: Address */}
         <div className="flex flex-col gap-4">
             <h4 className="text-xs text-gray-500 uppercase tracking-widest">Location</h4>
             <address className="not-italic text-lg text-gray-300 leading-relaxed">
-                Al-Farabi Ave, 77/7<br />
-                Esentai Tower, Floor 14<br />
-                Almaty, Kazakhstan
+                мкр. Самал-3, 15к1<br />
+                Алматы, Казахстан
             </address>
         </div>
 
@@ -67,7 +65,7 @@ export default function Footer() {
             <h4 className="text-xs text-gray-500 uppercase tracking-widest">Socials</h4>
             <div className="flex flex-col gap-2 text-lg text-gray-300">
                 {/* target="_blank" открывает в новой вкладке */}
-                <a href="https://instagram.com" target="_blank" className="hover:text-white transition-colors flex items-center gap-2">
+                <a href="https://www.instagram.com/snp.arch?igsh=Nnp0MmJqc2tzdTM=" target="_blank" className="hover:text-white transition-colors flex items-center gap-2">
                     <Instagram className="w-4 h-4" /> Instagram
                 </a>
                 <a href="https://linkedin.com" target="_blank" className="hover:text-white transition-colors flex items-center gap-2">

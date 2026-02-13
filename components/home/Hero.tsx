@@ -84,11 +84,11 @@ export default function Hero() {
           >
             <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-white" />
-                <span>Almaty, Kazakhstan</span>
+                <a href='https://2gis.kz/almaty/geo/9430047375085700/76.956587,43.227737'>Almaty, Kazakhstan</a>
             </div>
             <div className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
                 <Instagram className="w-4 h-4" />
-                <span>@snp.arch</span>
+                <a href = "https://www.instagram.com/snp.arch/">@snp.arch</a>
             </div>
           </motion.div>
         </div>

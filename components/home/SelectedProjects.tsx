@@ -7,29 +7,29 @@ import { ArrowUpRight } from 'lucide-react';
 const PROJECTS = [
   {
     id: 1,
-    title: "Mercure Hotel",
-    category: "Hospitality",
+    title: "Townhouse",
+    category: "Residential Complex",
     year: "2026",
     location: "Almaty, KZ",
-    src: "/images/mercure.jpg",
+    src: "/images/COL3.PNG",
     cols: "md:col-span-1",
   },
   {
     id: 2,
-    title: "Crown Residence",
-    category: "Private Housing",
+    title: "LimitlessIdentity",
+    category : "Modern Villa",
     year: "2025",
-    location: "Mountains, KZ",
-    src: "/images/C8.jpg",
+    location: "Almaty, KZ",
+    src: "/images/limitidentity.jpg",
     cols: "md:col-span-1",
   },
   {
     id: 3,
-    title: "Monterosa",
-    category: "Residential Complex",
-    year: "2025",
+    title: "CROWN RESIDENCE",
+    category: "Private Residence",
+    year: "2026",
     location: "Almaty, KZ",
-    src: "/images/monterosa.jpg",
+    src: "/images/COL2.jpg",
     cols: "md:col-span-2",
   },
   {
@@ -83,6 +83,7 @@ export default function SelectedProjects() {
 function ProjectCard({ project, index }: { project: any, index: number }) {
     return (
         <motion.div
+            data-cursor="view" // <--- ВОТ ЭТА МАГИЧЕСКАЯ СТРОЧКА!
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
