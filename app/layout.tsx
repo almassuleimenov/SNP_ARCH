@@ -10,12 +10,12 @@ import Preloader from "@/components/ui/Preloader";
 
 // 2. НАСТРАИВАЕМ ШРИФТЫ
 const inter = Inter({ 
-  subsets: ["latin"],
+  subsets: ["latin", "cyrillic"],
   variable: "--font-sans", // Это имя переменной для Tailwind
 });
 
 const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
+  subsets: ["latin", "cyrillic"],
   variable: "--font-serif", // Имя для serif шрифта
   weight: ["300", "400", "500", "600", "700"], // Загружаем разные толщины
   style: ["normal", "italic"], // Обязательно курсив для красоты
@@ -37,7 +37,9 @@ export default function RootLayout({
       <body className={`${inter.variable} ${cormorant.variable} font-sans bg-black text-white antialiased`}>
         
         <Preloader />
-        <CustomCursor />
+        <div className="hidden md:block">
+            <CustomCursor />
+        </div>
         <Noise />
         <Navbar />
 
