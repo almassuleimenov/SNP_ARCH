@@ -30,7 +30,7 @@ const PROJECTS = [
     category: "Private Residence",
     year: "2026",
     location: "Almaty, KZ",
-    src: "/images/COL2.jpg",
+    src: "/images/COL2.JPG",
     cols: "md:col-span-2", // На ПК растянется на всю ширину (2 колонки)
   },
   {

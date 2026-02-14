@@ -44,7 +44,6 @@ export default function Navbar() {
             onClick={(e) => handleScroll(e, '/')}
             className="text-xl md:text-2xl font-bold tracking-tighter uppercase z-50 hover:opacity-70 transition-opacity"
         >
-            SNP.ARCH
         </Link>
 
         {/* ДЕСКТОП МЕНЮ (Скрыто на мобилках) */}
