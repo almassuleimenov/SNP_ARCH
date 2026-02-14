@@ -60,7 +60,9 @@ export default function SelectedProjects() {
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-6">
         <div>
-            <h2 className="text-4xl md:text-6xl font-serif italic mb-2 text-gray-400">Selected</h2>
+            <h2 className="text-4xl md:text-6xl font-serif italic mb-2 text-gray-400">
+              Selected
+            </h2>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">Works</h2>
         </div>
         <div className="flex items-center gap-2 text-sm uppercase tracking-widest border-b border-white/30 pb-1 cursor-pointer hover:border-white transition-colors">

@@ -8,14 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // ВОТ СЮДА НУЖНО ДОБАВИТЬ ЭТОТ БЛОК:
+      // ОБЪЕДИНЕННЫЙ И ПРАВИЛЬНЫЙ БЛОК:
       fontFamily: {
-        // Теперь класс font-sans будет использовать Inter
-        sans: ["var(--font-inter)", "sans-serif"],
-        // А класс font-serif будет использовать Playfair Display (для заголовков)
-        serif: ["var(--font-playfair)", "serif"],
+        // Для обычного текста (Inter или Manrope — чистый, читаемый)
+        sans: ["var(--font-sans)", "sans-serif"], 
+        // Для заголовков (Cormorant Garamond — дорогой, архитектурный)
+        serif: ["var(--font-serif)", "serif"], 
       },
-      // (Тут могут быть другие настройки, типа colors, если они были)
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

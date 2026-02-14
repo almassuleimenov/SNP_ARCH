@@ -112,7 +112,9 @@ export default function Hero() {
                     transition={{ delay: 1.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
                     className="text-4xl md:text-6xl font-light italic text-gray-200 font-serif"
                 >
-                    Club House
+                    <h2 className="text-4xl md:text-6xl font-serif italic text-gray-200">
+                      Club House
+                    </h2>
                 </motion.h2>
                 <motion.div 
                     initial={{ width: 0 }}

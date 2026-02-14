@@ -1,15 +1,29 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+// 1. ИМПОРТИРУЕМ CORMORANT GARAMOND
+import { Inter, Cormorant_Garamond } from "next/font/google"; 
 import "./globals.css";
-import SmoothScroll from "@/components/animations/SmoothScroll";
-import CustomCursor from "@/components/ui/CustomCursor";
 
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair' });
+import Navbar from "@/components/layout/Navbar";
+import CustomCursor from "@/components/ui/CustomCursor";
+import Noise from "@/components/ui/Noise";
+import Preloader from "@/components/ui/Preloader";
+
+// 2. НАСТРАИВАЕМ ШРИФТЫ
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: "--font-sans", // Это имя переменной для Tailwind
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-serif", // Имя для serif шрифта
+  weight: ["300", "400", "500", "600", "700"], // Загружаем разные толщины
+  style: ["normal", "italic"], // Обязательно курсив для красоты
+});
 
 export const metadata: Metadata = {
-  title: "VONEMIELUS ARCHITECTS",
-  description: "Architecture Portfolio",
+  title: "SNP.ARCH | Architecture Studio",
+  description: "Premium architecture and interior design based in Almaty.",
 };
 
 export default function RootLayout({
@@ -18,18 +32,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} font-sans bg-black text-white antialiased`}>
-        {/* Курсор ставим выше всех, чтобы он не зависел от анимаций скролла */}
-        <CustomCursor /> 
+    <html lang="en" className="scroll-smooth">
+      {/* 3. ДОБАВЛЯЕМ ОБЕ ПЕРЕМЕННЫЕ В BODY */}
+      <body className={`${inter.variable} ${cormorant.variable} font-sans bg-black text-white antialiased`}>
         
-        {/* Navbar обычно тоже фиксированный, его можно оставить вне SmoothScroll или внутри — зависит от логики компонента */}
+        <Preloader />
+        <CustomCursor />
+        <Noise />
+        <Navbar />
 
-        <SmoothScroll>
-          <main>
+        <div className="relative z-10">
             {children}
-          </main>
-        </SmoothScroll>
+        </div>
+
       </body>
     </html>
   );

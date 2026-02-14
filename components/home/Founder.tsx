@@ -37,7 +37,9 @@ export default function Founder() {
             </h3>
             
             <p className="text-2xl md:text-4xl lg:text-5xl font-light leading-snug text-gray-200 mb-10">
-                <span className="font-serif italic text-white">«Мы не просто возводим стены.</span> Мы создаем сценарии жизни. Каждый наш проект — это баланс между эстетикой, функцией и характером его владельца».
+                <span className="font-serif italic text-white text-5xl">
+                «Мы не просто возводим стены,
+                </span> Мы создаем сценарии жизни. Каждый наш проект — это баланс между эстетикой, функцией и характером его владельца».
             </p>
 
             <div className="flex flex-col gap-1">
