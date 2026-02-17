@@ -5,7 +5,7 @@ import Marquee from 'react-fast-marquee';
 
 export default function About() {
   return (
-    <section  id = "studio" className="bg-zinc-950 text-white py-20 md:py-32 overflow-hidden">
+    <section id="studio" className="bg-zinc-950 text-white py-20 md:py-32 overflow-hidden">
       
       {/* 1. RUNNING LINE (MARQUEE) */}
       <div className="w-full border-y border-white/10 py-6 mb-20">
@@ -24,7 +24,8 @@ export default function About() {
       </div>
 
       {/* 2. THE MANIFESTO */}
-      <div className="container mx-auto px-6 md:px-20 grid grid-cols-1 md:grid-cols-12 gap-12">
+      {/* Было: container mx-auto. СТАЛО: w-full */}
+      <div className="w-full px-6 md:px-20 grid grid-cols-1 md:grid-cols-12 gap-12">
         
         {/* Left Column: Title */}
         <div className="md:col-span-4">

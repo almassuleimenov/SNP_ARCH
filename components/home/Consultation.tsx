@@ -14,13 +14,16 @@ export default function Consultation() {
   };
 
   const phoneNumber = "77478306902";
-  // Кодируем сообщение для WhatsApp, чтобы оно перенеслось корректно
+  // Кодируем сообщение для WhatsApp
   const waMessage = encodeURIComponent("Здравствуйте! Хочу записаться на консультацию.");
   
   return (
     <section className="bg-zinc-950 text-white py-20 md:py-32 px-6 md:px-20 border-t border-white/10">
       
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+      {/* 👇 ИСПРАВЛЕНИЕ ЗДЕСЬ: */}
+      {/* Было: max-w-7xl mx-auto (ограничитель) */}
+      {/* Стало: w-full (на всю ширину) */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
         
         {/* --- ЛЕВАЯ ЧАСТЬ: ФОРМА --- */}
         <motion.div
@@ -32,7 +35,6 @@ export default function Consultation() {
         >
             <h2 className="text-4xl md:text-6xl font-bold tracking-tighter uppercase mb-6">
                 Book a<br /> 
-                {/* Используем наш красивый шрифт для акцента */}
                 <span className="font-serif italic text-gray-400 font-light text-5xl md:text-7xl">
                   Consultation
                 </span>
@@ -48,7 +50,6 @@ export default function Consultation() {
                         type="text" 
                         required
                         placeholder="Как к вам обращаться?" 
-                        // py-4 (высокие поля) + text-lg (крупный текст)
                         className="w-full bg-transparent border-b border-white/20 py-4 text-lg focus:outline-none focus:border-white transition-colors placeholder:text-gray-600 font-light"
                     />
                 </div>
@@ -63,7 +64,7 @@ export default function Consultation() {
                     />
                 </div>
 
-                {/* Submit Button - Крупная кнопка */}
+                {/* Submit Button */}
                 <button 
                     type="submit"
                     className="group flex items-center justify-between w-full bg-white text-black px-8 py-5 mt-6 hover:bg-gray-200 transition-colors"

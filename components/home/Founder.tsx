@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 
 export default function Founder() {
   return (
+    // Убрали ограничения, оставили padding
     <section className="bg-zinc-950 text-white py-16 md:py-32 px-6 md:px-20 border-t border-white/10">
       
-      {/* GRID: 1 колонка на моб, 12 на ПК */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-20 items-center">
+      {/* GRID: Было max-w-7xl, СТАЛО w-full */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-20 items-center">
         
         {/* --- ФОТОГРАФИЯ --- */}
-        {/* Mobile: Квадрат (aspect-square), Desktop: Портрет (aspect-[3/4]) */}
         <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -41,7 +41,6 @@ export default function Founder() {
             {/* Цитата */}
             <blockquote className="mb-10">
                 <p className="text-xl md:text-3xl lg:text-4xl font-light leading-snug text-gray-300">
-                    {/* Serif шрифт для акцента */}
                     <span className="block font-serif italic text-white text-3xl md:text-5xl mb-4">
                     «Мы не просто возводим стены,
                     </span>

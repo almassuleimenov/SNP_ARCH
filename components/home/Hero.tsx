@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Instagram } from 'lucide-react';
 
-// Полный список всех 8 файлов (C-серия)
 const SLIDES = [
   { id: 1, src: '/images/C8.jpg', alt: 'Main Facade' },
   { id: 2, src: '/images/C2.jpg', alt: 'Pool Area' },
@@ -19,19 +18,14 @@ const SLIDES = [
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Логика переключения
   useEffect(() => {
-    // Запускаем таймер
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev === SLIDES.length - 1 ? 0 : prev + 1));
     }, 3500);
 
-    // Очищаем таймер при размонтировании или (ВАЖНО!) при ручном переключении слайда.
-    // Это значит, если ты кликнешь сам, таймер сбросится и начнет отсчет заново (3.5 сек).
     return () => clearInterval(timer);
-  }, [currentSlide]); // Добавили currentSlide в зависимости
+  }, [currentSlide]);
 
-  // Функция для клика по полоске
   const handleSlideChange = (index: number) => {
     setCurrentSlide(index);
   };
@@ -54,7 +48,6 @@ export default function Hero() {
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url('${SLIDES[currentSlide].src}')` }} 
             />
-            {/* Затемнение */}
             <div className="absolute inset-0 bg-black/40" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
           </motion.div>
@@ -84,11 +77,11 @@ export default function Hero() {
           >
             <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-white" />
-                <a href='https://2gis.kz/almaty/geo/9430047375085700/76.956587,43.227737'>Almaty, Kazakhstan</a>
+                <a href='https://2gis.kz/almaty/geo/9430047375085700/76.956587,43.227737' target="_blank" rel="noopener noreferrer">Almaty, Kazakhstan</a>
             </div>
             <div className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
                 <Instagram className="w-4 h-4" />
-                <a href = "https://www.instagram.com/snp.arch/">@snp.arch</a>
+                <a href="https://www.instagram.com/snp.arch/" target="_blank" rel="noopener noreferrer">@snp.arch</a>
             </div>
           </motion.div>
         </div>
@@ -106,16 +99,17 @@ export default function Hero() {
                 </motion.h1>
             </div>
             <div className="overflow-hidden flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                
+                {/* 👇 ВОТ ЗДЕСЬ БЫЛА ОШИБКА. Я УБРАЛ ЛИШНИЙ ВНУТРЕННИЙ ТЕГ <h2> */}
                 <motion.h2 
                     initial={{ y: "100%" }}
                     animate={{ y: 0 }}
                     transition={{ delay: 1.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
                     className="text-4xl md:text-6xl font-light italic text-gray-200 font-serif"
                 >
-                    <h2 className="text-4xl md:text-6xl font-serif italic text-gray-200">
-                      Club House
-                    </h2>
+                    Club House
                 </motion.h2>
+
                 <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: 100 }}
@@ -127,12 +121,11 @@ export default function Hero() {
 
         {/* BOTTOM INFO & NAVIGATION */}
         <div className="flex justify-between items-end">
-            {/* Кликабельные индикаторы */}
             <div className="flex gap-2">
                 {SLIDES.map((slide, index) => (
                     <div 
                         key={slide.id}
-                        onClick={() => handleSlideChange(index)} // ДОБАВИЛИ КЛИК
+                        onClick={() => handleSlideChange(index)}
                         className={`h-[2px] rounded-full transition-all duration-500 cursor-pointer hover:h-[4px] hover:bg-white ${
                             index === currentSlide ? 'w-12 bg-white' : 'w-4 bg-white/30 hover:w-6'
                         }`}

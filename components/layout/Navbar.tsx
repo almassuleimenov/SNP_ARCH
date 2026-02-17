@@ -4,27 +4,31 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const LINKS = [
-  { name: 'Home', href: '/' },       // Наверх
-  { name: 'Studio', href: '#studio' }, // К секции About
-  { name: 'Projects', href: '#projects' }, // К сетке проектов
-  { name: 'Visit', href: '#location' }, // К карте
-  { name: 'Contact', href: '#contact' },   // В самый низ
+  { name: 'Studio', href: '#studio' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
-  // Функция плавного скролла
+  // 🔥 1. УБИРАЕМ НАВБАР В АДМИНКЕ
+  // Если ссылка начинается на /studio — просто ничего не возвращаем
+  if (pathname && pathname.startsWith('/studio')) {
+    return null;
+  }
+
   const handleScroll = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
-    setIsOpen(false); // Закрываем мобильное меню при клике
+    setIsOpen(false);
 
     if (href === '/') {
        window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-       // Убираем решетку (#) чтобы получить чистый ID
        const id = href.replace('#', '');
        const element = document.getElementById(id);
        if (element) {
@@ -35,27 +39,27 @@ export default function Navbar() {
 
   return (
     <>
-      {/* --- UPPER BAR (Виден всегда) --- */}
-      <nav className="fixed top-0 left-0 right-0 z-[50] flex items-center justify-between px-6 py-6 md:px-12 mix-blend-difference text-white">
+      <nav className="fixed top-0 left-0 right-0 z-[50] flex items-center justify-between px-6 py-6 md:px-20 text-white mix-blend-difference">
         
-        {/* ЛОГОТИП */}
+        {/* 🔥 2. ЛОГОТИП ПУСТОЙ (Как ты и просил) */}
+        {/* Он работает как кнопка "Наверх", но текста внутри нет */}
         <Link 
             href="/" 
             onClick={(e) => handleScroll(e, '/')}
-            className="text-xl md:text-2xl font-bold tracking-tighter uppercase z-50 hover:opacity-70 transition-opacity"
+            className="w-10 h-10 z-50 hover:opacity-70 transition-opacity"
         >
+            {/* ТУТ ПУСТО */}
         </Link>
 
-        {/* ДЕСКТОП МЕНЮ (Скрыто на мобилках) */}
+        {/* ДЕСКТОП МЕНЮ */}
         <div className="hidden md:flex gap-10 text-xs font-medium tracking-widest uppercase">
-            {LINKS.slice(1).map((link) => ( // slice(1) чтобы убрать Home из меню (он в логотипе)
+            {LINKS.map((link) => (
                 <a 
                     key={link.name}
                     href={link.href}
                     onClick={(e) => handleScroll(e, link.href)}
                     className="relative group overflow-hidden cursor-pointer"
                 >
-                    {/* Эффект при наведении: слово уезжает вверх, снизу выезжает такое же */}
                     <span className="block transition-transform duration-300 group-hover:-translate-y-full">
                         {link.name}
                     </span>
@@ -66,7 +70,7 @@ export default function Navbar() {
             ))}
         </div>
 
-        {/* МОБИЛЬНАЯ КНОПКА (BURGER) */}
+        {/* МОБИЛЬНАЯ КНОПКА */}
         <button 
             onClick={() => setIsOpen(!isOpen)} 
             className="md:hidden z-50 p-2 focus:outline-none"
@@ -75,14 +79,13 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* --- MOBILE FULLSCREEN MENU --- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: "-100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }} // "Тяжелая" архитектурная анимация
+            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
             className="fixed inset-0 z-[40] bg-zinc-950 text-white flex flex-col items-center justify-center md:hidden"
           >
             <div className="flex flex-col gap-6 text-center">
@@ -101,7 +104,6 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Декор внизу мобильного меню */}
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
