@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-// 1. ИМПОРТИРУЕМ CORMORANT GARAMOND
 import { Inter, Cormorant_Garamond } from "next/font/google"; 
 import "./globals.css";
 
@@ -8,6 +7,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import Noise from "@/components/ui/Noise";
 import Preloader from "@/components/ui/Preloader";
 import SmoothScroll from "@/components/ui/SmoothScroll";
+import Footer from "@/components/layout/Footer"; // 🔥 1. ДОБАВИЛ ИМПОРТ
 
 // 2. НАСТРАИВАЕМ ШРИФТЫ
 const inter = Inter({ 
@@ -37,7 +37,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* 👇 СМОТРИ СЮДА: Я добавил selection:bg-[#C8A97E] selection:text-black в конец */}
       <body className={`${inter.variable} ${cormorant.variable} font-sans bg-black text-white antialiased selection:bg-[#C8A97E] selection:text-black`}>
         
         <SmoothScroll>
@@ -55,6 +54,9 @@ export default function RootLayout({
             <div className="relative z-10">
                 {children}
             </div>
+
+            {/* 🔥 2. ВСТАВИЛ ФУТЕР СЮДА */}
+            <Footer />
 
         </SmoothScroll>
 

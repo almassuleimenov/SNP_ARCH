@@ -35,20 +35,29 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const handleLinkClick = (e: React.MouseEvent, href: string) => {
-    e.preventDefault();
-    setIsOpen(false);
+    setIsOpen(false); // Закрываем меню в любом случае
 
-    if (href === '/') {
-       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-       const id = href.replace('#', '');
-       const element = document.getElementById(id);
-       if (element) {
-         element.scrollIntoView({ behavior: 'smooth' });
-       }
+    // 🔥 ГЛАВНОЕ ИСПРАВЛЕНИЕ:
+    // Мы делаем preventDefault (отмену перехода) ТОЛЬКО если мы сейчас на главной ('/')
+    if (pathname === '/') {
+      e.preventDefault();
+
+      if (href === '/') {
+        // Если клик по Логотипу на главной — скролл вверх
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        // Если клик по Меню на главной — скролл к секции
+        // href приходит в виде "studio" или "#studio", нам нужен чистый ID
+        const id = href.replace('/', '').replace('#', ''); 
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     }
+    // А если мы НЕ на главной (например, в проекте) — мы ничего не делаем.
+    // Link сам сработает и перекинет нас на главную страницу (href="/#projects").
   };
 
   return (

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { client, urlFor } from '@/lib/sanity'; 
 import Link from 'next/link';
-import Image from 'next/image'; // 👈 1. ОБЯЗАТЕЛЬНЫЙ ИМПОРТ
+import Image from 'next/image';
 
 interface Project {
   _id: string;
@@ -14,7 +14,6 @@ interface Project {
   year: string;
   location: string;
   mainImage: any;
-  cols: string; 
   slug: { current: string };
 }
 
@@ -23,7 +22,8 @@ export default function SelectedProjects() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const query = `*[_type == "project"] | order(_createdAt asc){
+      // Берем 6 проектов для красоты сетки
+      const query = `*[_type == "project"] | order(_createdAt asc)[0...6]{
         ...,
         slug
       }`;
@@ -39,8 +39,8 @@ export default function SelectedProjects() {
   return (
     <section id="projects" className="bg-black text-white py-20 md:py-32 px-6 md:px-20 border-t border-white/10">
       
-      {/* ЗАГОЛОВОК СЕКЦИИ */}
-      <div className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-6">
+      {/* ЗАГОЛОВОК */}
+      <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-6">
         <div>
            <h2 className="text-4xl md:text-6xl font-serif italic mb-2 text-gray-400">
              Selected
@@ -48,14 +48,11 @@ export default function SelectedProjects() {
            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">Works</h2>
         </div>
         
-        <div className="group flex items-center gap-2 text-sm uppercase tracking-widest border-b border-white/30 pb-1 cursor-pointer hover:border-white transition-colors">
-           <span>View All Projects</span>
-           <ArrowUpRight className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
-        </div>
+        {/* Кнопку "View All" убрали, как ты просил */}
       </div>
 
-      {/* СЕТКА ПРОЕКТОВ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      {/* 🔥 АСИММЕТРИЧНАЯ СЕТКА */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24">
         {projects.map((project, index) => (
            <ProjectCard key={project._id} project={project} index={index} />
         ))}
@@ -65,61 +62,72 @@ export default function SelectedProjects() {
   );
 }
 
-// ОТДЕЛЬНЫЙ КОМПОНЕНТ КАРТОЧКИ
 function ProjectCard({ project, index }: { project: Project, index: number }) {
+    // 🔥 МАГИЯ ПРОПОРЦИЙ:
+    // Мы меняем высоту фото в зависимости от очередности, чтобы было динамично.
+    // 0: Горизонтальное (4/3)
+    // 1: Вертикальное (3/4) - модно для архитектуры
+    // 2: Квадрат (1/1)
+    const aspectRatios = [
+        'aspect-[4/3]', // Классика
+        'aspect-[3/4]', // Портрет (Высокое)
+        'aspect-square', // Квадрат
+    ];
+    
+    // Выбираем пропорцию по кругу
+    const currentAspect = aspectRatios[index % 3];
+
+    // 🔥 МАГИЯ СДВИГА:
+    // Если это правая колонка (нечетный индекс), мы опускаем её вниз (margin-top).
+    // Это ломает скучную сетку.
+    const isRightColumn = index % 2 !== 0;
+
     return (
         <Link 
             href={`/projects/${project.slug?.current}`} 
-            className={`block w-full ${project.cols || 'md:col-span-1'}`}
+            className={`block w-full group ${isRightColumn ? 'md:mt-32' : ''}`} // Сдвиг правой колонки
         >
             <motion.div
-                data-cursor="view"
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 100 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group relative cursor-pointer w-full"
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="w-full"
             >
-                {/* КОНТЕЙНЕР КАРТИНКИ */}
-                <div className="relative overflow-hidden aspect-square md:aspect-[4/3] w-full mb-5 rounded-sm">
+                {/* КАРТИНКА С ДИНАМИЧЕСКОЙ ПРОПОРЦИЕЙ */}
+                <div className={`relative overflow-hidden w-full mb-6 bg-zinc-900 ${currentAspect}`}>
                     
-                    {/* Затемнение */}
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10 duration-500" />
+                    {/* Оверлей */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10" />
                     
-                    {/* 👇 2. ИСПРАВЛЕНИЕ: ЗАМЕНИЛИ ФОН НА <Image /> */}
                     {project.mainImage && (
                         <Image
                             src={urlFor(project.mainImage).url()}
                             alt={project.title}
-                            fill // Растягивает картинку на весь блок
-                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, 90vw" // Говорим браузеру: "Грузи большую картинку!"
-                            quality={100} // Максимальное качество
+                            fill
+                            className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, 50vw" // Оптимизация: грузим только половину ширины экрана
+                            quality={95}
                         />
                     )}
                     
-                    {/* Иконка */}
-                    <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div className="bg-white/10 backdrop-blur-md rounded-full p-4 border border-white/20">
+                    {/* Кнопка по центру */}
+                    <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-90 group-hover:scale-100">
+                        <div className="bg-white/10 backdrop-blur-md rounded-full w-20 h-20 flex items-center justify-center border border-white/20">
                             <ArrowUpRight className="w-8 h-8 text-white" />
                         </div>
                     </div>
                 </div>
 
-                {/* ТЕКСТ ПОД КАРТИНКОЙ */}
-                <div className="flex justify-between items-start border-t border-white/20 pt-4 group-hover:border-white transition-colors duration-500">
-                    <div>
-                        <h3 className="text-2xl md:text-3xl font-medium mb-1 group-hover:text-gray-300 transition-colors font-serif">
-                            {project.title}
-                        </h3>
-                        <span className="text-xs md:text-sm text-gray-500 uppercase tracking-widest font-sans">
-                            {project.category}
-                        </span>
-                    </div>
-                    
-                    <div className="text-right hidden md:block">
-                        <div className="text-sm text-gray-400">{project.location}</div>
-                        <div className="text-sm text-gray-500 font-mono">{project.year}</div>
+                {/* ИНФО */}
+                <div className="flex flex-col gap-2 border-l border-white/20 pl-6 group-hover:border-white transition-colors duration-500">
+                    <h3 className="text-3xl md:text-4xl font-serif italic text-white group-hover:text-gray-300 transition-colors">
+                        {project.title}
+                    </h3>
+                    <div className="flex gap-4 text-xs uppercase tracking-widest text-gray-500">
+                        <span>{project.category}</span>
+                        <span>•</span>
+                        <span>{project.year}</span>
                     </div>
                 </div>
             </motion.div>

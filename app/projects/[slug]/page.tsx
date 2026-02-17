@@ -1,8 +1,7 @@
 import { client, urlFor } from '@/lib/sanity';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
-// ArrowLeft больше не нужен, я убрал его из импортов
+import Consultation from '@/components/home/Consultation';
 
 async function getProject(slug: string) {
   const query = `*[_type == "project" && slug.current == $slug][0]{
@@ -24,21 +23,22 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
+    <main className="min-h-screen bg-black text-white selection:bg-[#C8A97E] selection:text-black">
       
-      {/* КНОПКУ "BACK" УБРАЛИ ПОЛНОСТЬЮ. ТЕПЕРЬ НАВИГАЦИЯ ЧЕРЕЗ ЛОГОТИП В NAVBAR. */}
-
-      {/* HERO SECTION */}
+      {/* HERO SECTION - МАКСИМАЛЬНОЕ КАЧЕСТВО */}
       <section className="relative w-full h-screen">
         <div className="absolute inset-0 bg-black/40 z-10" />
         {project.mainImage && (
             <Image
-                src={urlFor(project.mainImage).url()}
+                // 🔥 1. ФИКС КАЧЕСТВА:
+                // Мы просим Sanity дать картинку шириной 3840px (4K)
+                // Если оригинал меньше, он отдаст оригинал. Если больше — ужмет до 4K (чтобы не грузить 50мб).
+                src={urlFor(project.mainImage).width(3840).url()} 
                 alt={project.title}
                 fill
                 className="object-cover"
-                priority
-                quality={100}
+                priority // Грузим в первую очередь
+                quality={100} // Максимальное качество Next.js
                 sizes="100vw"
             />
         )}
@@ -65,7 +65,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       {/* DESCRIPTION SECTION */}
       <section className="w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
-         
          <div>
             <h3 className="text-xs text-gray-500 uppercase tracking-widest mb-6">The Concept</h3>
             <p className="text-2xl md:text-4xl font-serif italic text-white leading-tight">
@@ -78,38 +77,49 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
          </div>
       </section>
 
-      {/* ГАЛЕРЕЯ */}
+      {/* ГАЛЕРЕЯ - ЖУРНАЛЬНАЯ ВЕРСТКА */}
       {project.gallery && project.gallery.length > 0 && (
         <section className="w-full py-10 px-6 md:px-20">
-            <h3 className="text-xs text-gray-500 uppercase tracking-widest mb-8">Gallery</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:gap-12">
-                {project.gallery.map((image: any, index: number) => (
-                    <div key={index} className="relative aspect-[4/3] w-full overflow-hidden rounded-sm group">
-                         <Image
-                            src={urlFor(image).url()}
-                            alt={`Gallery image ${index + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            quality={90}
-                        />
-                    </div>
-                ))}
+            <h3 className="text-xs text-gray-500 uppercase tracking-widest mb-16">Gallery</h3>
+            
+            {/* 🔥 2. ФИКС СЕТКИ: ДЕЛАЕМ КАК НА ГЛАВНОЙ (СДВИГ + ПРОПОРЦИИ) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24">
+                {project.gallery.map((image: any, index: number) => {
+                    
+                    // Логика пропорций (Горизонт / Вертикаль / Квадрат)
+                    const aspectRatios = ['aspect-[4/3]', 'aspect-[3/4]', 'aspect-square'];
+                    const currentAspect = aspectRatios[index % 3];
+                    
+                    // Логика сдвига (Правая колонка ниже)
+                    const isRightColumn = index % 2 !== 0;
+
+                    return (
+                        <div 
+                            key={index} 
+                            className={`relative w-full group ${isRightColumn ? 'md:mt-32' : ''}`}
+                        >
+                             <div className={`relative overflow-hidden w-full bg-zinc-900 ${currentAspect}`}>
+                                <Image
+                                    // Для галереи просим ширину 1200px (хватит с головой для пол-экрана)
+                                    src={urlFor(image).width(1200).url()}
+                                    alt={`Gallery image ${index + 1}`}
+                                    fill
+                                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    quality={95}
+                                />
+                                {/* Оверлей для красоты */}
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+                             </div>
+                        </div>
+                    );
+                })}
             </div>
         </section>
       )}
 
-      {/* FOOTER CALL TO ACTION */}
-      {/* Кстати, если ты добавил глобальный <Footer /> в layout.tsx, 
-          то этот блок можно тоже убрать, чтобы не дублировать "контакты" два раза подряд.
-          Но если глобального футера нет, оставь как есть.
-      */}
-      <section className="border-t border-white/10 py-32 text-center bg-zinc-950 mt-20">
-        <p className="text-xs text-gray-500 uppercase tracking-widest mb-4">Interested?</p>
-        <Link href="/#contact" className="text-5xl md:text-8xl font-serif italic hover:text-white text-gray-400 transition-colors">
-            Start a Project
-        </Link>
-      </section>
+      {/* ФОРМА КОНСУЛЬТАЦИИ */}
+      <Consultation />
 
     </main>
   );
