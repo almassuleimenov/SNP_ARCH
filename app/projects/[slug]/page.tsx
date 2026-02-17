@@ -2,7 +2,7 @@ import { client, urlFor } from '@/lib/sanity';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+// ArrowLeft больше не нужен, я убрал его из импортов
 
 async function getProject(slug: string) {
   const query = `*[_type == "project" && slug.current == $slug][0]{
@@ -25,20 +25,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
-      {/* КНОПКА НАЗАД */}
-      <Link 
-        href="/#projects" 
-        // 👇 ИЗМЕНЕНИЯ:
-        // 1. z-[9999] — чтобы она была выше любой навигации или хедера
-        // 2. top-10 — опустили чуть ниже (было top-8), чтобы уйти из зоны системных баров
-        // 3. cursor-pointer — принудительно показываем руку
-        className="fixed top-10 left-8 z-[9999] cursor-pointer flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-sm font-bold uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all border border-white/20"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back
-      </Link>
+      
+      {/* КНОПКУ "BACK" УБРАЛИ ПОЛНОСТЬЮ. ТЕПЕРЬ НАВИГАЦИЯ ЧЕРЕЗ ЛОГОТИП В NAVBAR. */}
 
-      {/* HERO SECTION (Тут всё ок, w-full) */}
+      {/* HERO SECTION */}
       <section className="relative w-full h-screen">
         <div className="absolute inset-0 bg-black/40 z-10" />
         {project.mainImage && (
@@ -73,9 +63,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      {/* 👇 ИСПРАВЛЕНИЕ: DESCRIPTION SECTION 👇 */}
-      {/* Было: max-w-7xl mx-auto (ограничивало ширину) */}
-      {/* Стало: w-full (на всю ширину, как Hero) */}
+      {/* DESCRIPTION SECTION */}
       <section className="w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
          
          <div>
@@ -90,13 +78,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
          </div>
       </section>
 
-      {/* 👇 ИСПРАВЛЕНИЕ: ГАЛЕРЕЯ 👇 */}
-      {/* Было: max-w-7xl mx-auto */}
-      {/* Стало: w-full */}
+      {/* ГАЛЕРЕЯ */}
       {project.gallery && project.gallery.length > 0 && (
         <section className="w-full py-10 px-6 md:px-20">
             <h3 className="text-xs text-gray-500 uppercase tracking-widest mb-8">Gallery</h3>
-            {/* Меняем gap, чтобы на больших экранах фото не слипались */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:gap-12">
                 {project.gallery.map((image: any, index: number) => (
                     <div key={index} className="relative aspect-[4/3] w-full overflow-hidden rounded-sm group">
@@ -105,7 +90,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                             alt={`Gallery image ${index + 1}`}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, 50vw" // Оптимизация размеров
+                            sizes="(max-width: 768px) 100vw, 50vw"
                             quality={90}
                         />
                     </div>
@@ -114,7 +99,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </section>
       )}
 
-      {/* FOOTER */}
+      {/* FOOTER CALL TO ACTION */}
+      {/* Кстати, если ты добавил глобальный <Footer /> в layout.tsx, 
+          то этот блок можно тоже убрать, чтобы не дублировать "контакты" два раза подряд.
+          Но если глобального футера нет, оставь как есть.
+      */}
       <section className="border-t border-white/10 py-32 text-center bg-zinc-950 mt-20">
         <p className="text-xs text-gray-500 uppercase tracking-widest mb-4">Interested?</p>
         <Link href="/#contact" className="text-5xl md:text-8xl font-serif italic hover:text-white text-gray-400 transition-colors">

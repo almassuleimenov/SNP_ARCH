@@ -7,23 +7,27 @@ import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Noise from "@/components/ui/Noise";
 import Preloader from "@/components/ui/Preloader";
+import SmoothScroll from "@/components/ui/SmoothScroll"; // 👈 ИМПОРТ СКРОЛЛА
 
 // 2. НАСТРАИВАЕМ ШРИФТЫ
 const inter = Inter({ 
   subsets: ["latin", "cyrillic"],
-  variable: "--font-sans", // Это имя переменной для Tailwind
+  variable: "--font-sans",
 });
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-serif", // Имя для serif шрифта
-  weight: ["300", "400", "500", "600", "700"], // Загружаем разные толщины
-  style: ["normal", "italic"], // Обязательно курсив для красоты
+  variable: "--font-serif",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   title: "SNP.ARCH | Architecture Studio",
   description: "Premium architecture and interior design based in Almaty.",
+  icons: {
+    icon: "/icon.png", // Не забудь про фавиконку, про которую я говорил!
+  },
 };
 
 export default function RootLayout({
@@ -32,20 +36,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       {/* 3. ДОБАВЛЯЕМ ОБЕ ПЕРЕМЕННЫЕ В BODY */}
       <body className={`${inter.variable} ${cormorant.variable} font-sans bg-black text-white antialiased`}>
         
-        <Preloader />
-        <div className="hidden md:block">
-            <CustomCursor />
-        </div>
-        <Noise />
-        <Navbar />
+        {/* 👇 ОБЕРАЧИВАЕМ ВСЁ В SMOOTH SCROLL 👇 */}
+        <SmoothScroll>
+            
+            <Preloader />
+            
+            <div className="hidden md:block">
+                <CustomCursor />
+            </div>
+            
+            <Noise />
+            
+            <Navbar />
 
-        <div className="relative z-10">
-            {children}
-        </div>
+            <div className="relative z-10">
+                {children}
+            </div>
+
+        </SmoothScroll>
 
       </body>
     </html>
