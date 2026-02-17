@@ -143,7 +143,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* app/globals.css */
 
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance; /* Магия для заголовков */
+}
+
+p {
+  text-wrap: pretty; /* Магия для абзацев (чтобы не висели предлоги) */
+}
 /* Или, если хочешь вообще убрать его визуально (но оставить скролл): */
 /* ::-webkit-scrollbar {
   width: 0px;
