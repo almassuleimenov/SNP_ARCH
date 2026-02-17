@@ -126,3 +126,27 @@
     @apply bg-background text-foreground;
   }
 }
+/* Делаем скроллбар стильным и тонким */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b; /* Цвет фона (zinc-950) */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; /* Цвет самой палочки */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Или, если хочешь вообще убрать его визуально (но оставить скролл): */
+/* ::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+} 
+*/

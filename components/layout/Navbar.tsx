@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
@@ -14,6 +14,7 @@ const LINKS = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // 🔥 1. Состояние скролла
   const pathname = usePathname();
 
   // УБИРАЕМ НАВБАР В АДМИНКЕ
@@ -21,56 +22,65 @@ export default function Navbar() {
     return null;
   }
 
-  // 🔥 ИСПРАВЛЕННАЯ ФУНКЦИЯ СКРОЛЛА
-  const handleScroll = (e: React.MouseEvent, href: string) => {
-    // 1. ЛОГИКА ДЛЯ ЛОГОТИПА ('/')
-    if (href === '/') {
-        // Если мы УЖЕ на главной — просто плавно скроллим вверх
-        if (pathname === '/') {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        // Если мы НЕ на главной (например, в проекте) — 
-        // мы НИЧЕГО не делаем (не вызываем preventDefault).
-        // Link сам перекинет нас на главную страницу.
-        return;
-    }
+  // 🔥 2. СЛЕЖИМ ЗА СКРОЛЛОМ
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true); // Если прокрутили > 50px — включаем фон
+      } else {
+        setIsScrolled(false); // Если наверху — убираем фон
+      }
+    };
 
-    // 2. ЛОГИКА ДЛЯ ЯКОРЕЙ (#studio, #projects...)
-    // Если мы на главной — скроллим к секции
-    if (pathname === '/') {
-        e.preventDefault(); // Блокируем стандартный переход, чтобы был плавный скролл
-        setIsOpen(false);
-        
-        const id = href.replace('#', '');
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleLinkClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+
+    if (href === '/') {
+       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+       const id = href.replace('#', '');
+       const element = document.getElementById(id);
+       if (element) {
+         element.scrollIntoView({ behavior: 'smooth' });
+       }
     }
-    // Если мы НЕ на главной — Link сам перекинет нас на главную к нужному якорю (/#studio)
   };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[50] flex items-center justify-between px-6 py-6 md:px-20 text-white mix-blend-difference">
+      {/* 🔥 3. ДИНАМИЧЕСКИЕ КЛАССЫ */}
+      <nav 
+        className={`fixed top-0 left-0 right-0 z-[50] flex items-center justify-between px-6 md:px-20 text-white transition-all duration-500 ${
+          isScrolled 
+            ? 'bg-black/80 backdrop-blur-md py-4 border-b border-white/10' // КОГДА СКРОЛЛИМ: Темное стекло, меньше отступы
+            : 'bg-transparent py-6 border-transparent' // КОГДА НАВЕРХУ: Полная прозрачность, больше воздуха
+        }`}
+      >
         
-        {/* ЛОГОТИП */}
+        {/* ЛОГОТИП (Пустой, как ты просил, работает как кнопка "Наверх") */}
         <Link 
             href="/" 
-            onClick={(e) => handleScroll(e, '/')}
+            onClick={(e) => handleLinkClick(e, '/')}
             className="text-xl md:text-2xl font-bold tracking-tighter uppercase z-50 hover:opacity-70 transition-opacity"
         >
-            SNP.ARCH
+            {/* Если хочешь вернуть текст, напиши тут SNP.ARCH */}
+            {/* Сейчас тут пусто, как ты просил */}
+             SNP.ARCH
         </Link>
 
         {/* ДЕСКТОП МЕНЮ */}
-        <div className="hidden md:flex gap-10 text-xs font-medium tracking-widest uppercase">
+        {/* mix-blend-difference включаем ТОЛЬКО наверху, чтобы на белых фото текст стал черным */}
+        <div className={`hidden md:flex gap-10 text-xs font-medium tracking-widest uppercase transition-colors ${!isScrolled ? 'mix-blend-difference' : ''}`}>
             {LINKS.map((link) => (
                 <Link 
                     key={link.name}
-                    href={`/${link.href}`} // Добавляем слэш, чтобы работало и с других страниц (/#studio)
-                    onClick={(e) => handleScroll(e, link.href)}
+                    href={`/${link.href}`}
+                    onClick={(e) => handleLinkClick(e, link.href)}
                     className="relative group overflow-hidden cursor-pointer"
                 >
                     <span className="block transition-transform duration-300 group-hover:-translate-y-full">
@@ -86,12 +96,13 @@ export default function Navbar() {
         {/* МОБИЛЬНАЯ КНОПКА */}
         <button 
             onClick={() => setIsOpen(!isOpen)} 
-            className="md:hidden z-50 p-2 focus:outline-none"
+            className={`md:hidden z-50 p-2 focus:outline-none ${!isScrolled ? 'mix-blend-difference' : ''}`}
         >
             {isOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
         </button>
       </nav>
 
+      {/* MOBILE MENU (Без изменений) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -105,9 +116,9 @@ export default function Navbar() {
               {LINKS.map((link, index) => (
                 <Link
                     key={link.name}
-                    href={`/${link.href}`} // Тоже добавляем слэш для надежности
-                    onClick={(e) => handleScroll(e, link.href)}
-                    className="block" // Обертка для motion
+                    href={`/${link.href}`}
+                    onClick={(e) => handleLinkClick(e, link.href)}
+                    className="block"
                 >
                     <motion.span
                         initial={{ opacity: 0, y: 20 }}

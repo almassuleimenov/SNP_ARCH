@@ -7,7 +7,7 @@ import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Noise from "@/components/ui/Noise";
 import Preloader from "@/components/ui/Preloader";
-import SmoothScroll from "@/components/ui/SmoothScroll"; // 👈 ИМПОРТ СКРОЛЛА
+import SmoothScroll from "@/components/ui/SmoothScroll";
 
 // 2. НАСТРАИВАЕМ ШРИФТЫ
 const inter = Inter({ 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: "SNP.ARCH | Architecture Studio",
   description: "Premium architecture and interior design based in Almaty.",
   icons: {
-    icon: "/icon.png", // Не забудь про фавиконку, про которую я говорил!
+    icon: "/icon.png", 
   },
 };
 
@@ -37,10 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* 3. ДОБАВЛЯЕМ ОБЕ ПЕРЕМЕННЫЕ В BODY */}
-      <body className={`${inter.variable} ${cormorant.variable} font-sans bg-black text-white antialiased`}>
+      {/* 👇 СМОТРИ СЮДА: Я добавил selection:bg-[#C8A97E] selection:text-black в конец */}
+      <body className={`${inter.variable} ${cormorant.variable} font-sans bg-black text-white antialiased selection:bg-[#C8A97E] selection:text-black`}>
         
-        {/* 👇 ОБЕРАЧИВАЕМ ВСЁ В SMOOTH SCROLL 👇 */}
         <SmoothScroll>
             
             <Preloader />
