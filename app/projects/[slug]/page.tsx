@@ -9,7 +9,12 @@ async function getProject(slug: string) {
     ...,
     concept,
     description,
-    gallery
+    "mainImageBlur": mainImage.asset->metadata.lqip, // 🔥 Тянем блюр-заглушку для главной
+    gallery[] {
+      "asset": asset->,
+      "url": asset->url,
+      "metadata": asset->metadata // 🔥 Тянем метаданные (включая блюр) для галереи
+    }
   }`;
   const data = await client.fetch(query, { slug });
   return data;

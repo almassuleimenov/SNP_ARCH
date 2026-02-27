@@ -32,6 +32,8 @@ export default function ProjectClient({ project }: { project: any }) {
                     priority 
                     quality={100} 
                     sizes="100vw"
+                    placeholder="blur" // 🔥 Включаем блюр
+                    blurDataURL={project.mainImageBlur} // 🔥 Данные заглушки
                 />
             </motion.div>
         )}
@@ -127,12 +129,14 @@ export default function ProjectClient({ project }: { project: any }) {
                         >
                              <div className={`relative overflow-hidden w-full bg-zinc-900 ${currentAspect}`}>
                                 <Image
-                                    src={urlFor(image).width(1200).url()}
+                                    src={urlFor(image.asset).width(1200).url()}
                                     alt={`Gallery image ${index + 1}`}
                                     fill
                                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     quality={95}
+                                    placeholder="blur" // 🔥 Включаем блюр
+                                    blurDataURL={image.metadata.lqip} // 🔥 Данные заглушки из метаданных
                                 />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                              </div>
