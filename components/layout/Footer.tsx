@@ -1,8 +1,16 @@
 'use client';
 
 import { ArrowUp, Instagram, Linkedin, Palette, Mail, Phone } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link'; 
 
 export default function Footer() {
+
+    const pathname = usePathname(); 
+
+  if (pathname && pathname.startsWith('/studio')) {
+    return null;
+  }
   
   const scrollToSection = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
@@ -85,9 +93,11 @@ export default function Footer() {
             <div className="flex flex-col gap-4 text-lg text-gray-400 font-light">
                 <a href="/" onClick={scrollToTop} className="hover:text-white transition-colors w-fit">Home</a>
                 <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="hover:text-white transition-colors w-fit">Selected Works</a>
-                <a href="#studio" onClick={(e) => scrollToSection(e, 'studio')} className="hover:text-white transition-colors w-fit">The Studio</a>
-                <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="hover:text-white transition-colors w-fit">Contact</a>
-            </div>
+                <a href="#location" onClick={(e) => scrollToSection(e, 'studio')} className="hover:text-white transition-colors w-fit">The Studio</a>
+                <a href="#consultation" onClick={(e) => scrollToSection(e, 'consultation')} className="hover:text-white transition-colors w-fit">
+                    Contact
+                </a>            
+                </div>
         </div>
 
          {/* Contact */}
@@ -106,12 +116,12 @@ export default function Footer() {
         <span>© 2026 SNP.ARCH. All rights reserved.</span>
         
         <div className="flex gap-8 mt-4 md:mt-0">
-            <a href="#" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-400 transition-colors">Terms of Use</a>
+            <Link href="/privacy" className="hover:text-gray-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gray-400 transition-colors">Terms of Use</Link>
         </div>
         
         <span className="hidden md:block opacity-50 hover:opacity-100 transition-opacity">
-            Designed by Almas
+            Designed by Suleimenov Almas
         </span>
       </div>
     </footer>

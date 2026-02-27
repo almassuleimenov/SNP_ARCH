@@ -7,9 +7,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const LINKS = [
-  { name: 'Studio', href: '#studio' },
+  { name: 'Studio', href: '#location' },
   { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Contact', href: '#consultation' },
 ];
 
 export default function Navbar() {

@@ -4,8 +4,6 @@ import Founder from "@/components/home/Founder"; // <-- ИМПОРТ
 import SelectedProjects from "@/components/home/SelectedProjects";
 import Location from "@/components/home/Location"; 
 import Consultation from "@/components/home/Consultation";
-import Footer from "@/components/layout/Footer";
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-black">
@@ -15,7 +13,6 @@ export default function Home() {
       <SelectedProjects />
       <Location />
       <Consultation />
-      <Footer />
     </main>
   );
 }
