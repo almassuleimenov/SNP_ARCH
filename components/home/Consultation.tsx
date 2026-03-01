@@ -118,7 +118,7 @@ export default function Consultation() {
             <div className="flex flex-col gap-6">
                 {/* WhatsApp */}
                 <a 
-                    href={`https://wa.me/${phoneNumber}?text=${waMessage}`}
+                    href={`https://wa.me/${"77023664267"}?text=${encodeURIComponent("Здравствуйте! Я с сайта, хочу обсудить архитектурный проект.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center justify-between p-6 border border-white/10 hover:border-[#25D366] transition-colors bg-white/5 backdrop-blur-sm"
