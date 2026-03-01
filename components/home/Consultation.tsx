@@ -135,7 +135,7 @@ export default function Consultation() {
 
                 {/* Telegram */}
                 <a 
-                    href={`https://t.me/snparch`} 
+                    href={`https://t.me/SNPARCHBOT`} 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center justify-between p-6 border border-white/10 hover:border-[#229ED9] transition-colors bg-white/5 backdrop-blur-sm"
